@@ -1,0 +1,51 @@
+body {
+    background-image: url(../public/imagens/fundo.jpg);
+    background-size: cover;
+}
+
+.titulo {
+    text-align: center;
+    width: 80%;
+    margin: 1vh 10%;
+}
+
+.container {
+    background-image: linear-gradient(rgb(99, 161, 223), rgba(21, 9, 136, 0.973));
+    color: white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+    height: 549px;
+    width: 40%;
+    padding: 20px;
+    margin-top: 60px;
+    margin-left: 30%;
+    
+}
+
+input{
+    width: 90%;
+    height: 8%;
+    justify-content: center;
+    padding: 5px;
+    box-sizing: border-box;
+    margin: 1vh 5%;
+    border-radius: 50px;
+    background: rgb(166, 202, 229);
+}
+
+.botao {
+    display: inline-block;
+    background: rgb(30, 12, 129);
+    color: #EBEBEB;
+    border-radius: 50px;
+    text-align: center;
+    margin: 1vh auto;
+    padding: 0;
+    font-size: 15px;
+    width: 50%;
+    height: 5vh;
+}
