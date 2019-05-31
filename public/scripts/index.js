@@ -1,115 +1,126 @@
-const alfabeto = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+var alfabeto = ["a", "b", "c", "d", "e", "f",
+    "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+]
+var key = []
 
-//criptografia
-document.getElementsByClassName('botao')[0].addEventListener('click', () => {
-    let text = (removeAcento(capturaInput(0)))
-    let key = retornaVetorPosicoes(removeAcento(capturaInput(1)))
-    let anchor = 0
-    let retorno = ""
+function capElemento(ref) {
+    const element = document.querySelector(ref);
+    return element;
+}
 
-    for (let i = 0; i < text.length; i++) {
-        console.log(text[i]);
-        
-        if (text[i] == " ") {
-            retorno += text[i]
-        }
-        else {
-            if (anchor > key.length) {
-                anchor = 0
-                retorno += cifraLetra(returnP(text[i]), key[anchor])
-            } else if (anchor <= key.length) {
-                retorno += cifraLetra(returnP(text[i]), key[anchor])
-            } else { }
-            anchor++
-        }
-    }
-
-    document.getElementsByClassName('retorno').innerHTML = retorno
+const btnCifrar = capElemento('#cifrar')
+btnCifrar.addEventListener('click', () => {
+    criptografar(verChave())
 })
 
-//Descriptografia
-document.getElementsByClassName('botao')[1].addEventListener('click', () => {
-    let text = capturaInput(0)
-    let key = retornaVetorPosicoes(removeAcento(capturaInput(1)))
-    let anchor = 0
-    let retorno = ""
-
-    for (let i = 0; i < text.length; i++) {
-        if (text[i] == " ") {
-            retorno += text[i]
-        } else {
-            if (anchor > key.length) {
-                anchor = 0
-                retorno += descifraLetra(returnP(text[i]), key[anchor])
-            } else if (anchor <= key.length) {
-                retorno += descifraLetra(returnP(text[i]), key[anchor])
-            } else { }
-            anchor++
-        }
-    }
-
-    document.getElementsByClassName('retorno').innerHTML = retorno
+const btnDecifrar = capElemento('#descifrar')
+btnDecifrar.addEventListener('click', () => {
+    descriptografar(verChave())
 })
 
-
-//Capturar valor da input desejada
-const capturaInput = (posicao) => {
-    let valor = document.getElementsByTagName('input')[posicao].value
-    if (valor != "") {
-        return valor.toUpperCase()
+function verChave() {
+    let k = capElemento('.senha').value;
+    if (!k.length) {
+        alert('Chave inválida!');
     } else {
-        alert('Valor Nulo!')
+        return k
     }
 }
 
-//Cifra Letra
-const cifraLetra = (Posicaoletra, valor) => {
-    return alfabeto[(Posicaoletra + valor) % alfabeto.length]
-}
-
-//Descifra Letra
-const descifraLetra = (Posicaoletra, valor) => {
-    return alfabeto[((Posicaoletra - valor) + alfabeto.length) % alfabeto.length]
-}
-
-//Retorna o posição da letra no alfabeto.
-const returnP = (letra) => {
-    for (let i = 0; i < alfabeto.length; i++) {
-        if (alfabeto[i] == letra) {
-            return i
+newKey = () => {
+    let ch = retirarAcento(capElemento('.senha').value.toLowerCase());
+    for (let k = 0; k < ch.length; k++) {
+        for (let n = 0; n < alfabeto.length; n++) {
+            if (alfabeto[n] === ch[k]) {
+                key[k] = n
+            }
         }
     }
+    return key
 }
 
+function criptografar() {
+    capElemento(".retorno").innerHTML = "<h3>Resultado<h3>"
+    let chav = newKey();
+    console.log(chav)
+    let word = retirarAcento(capElemento('.palavra').value.toLowerCase());
+    console.log(word)
+    let res = "", retorno = "";
+    let anchor = 0;
+    for (let i = 0; i < word.length; i++) {
+        if (word[i] != " ") {
+            for (let c = 0; c < alfabeto.length; c++) {
+                if (word[i] == alfabeto[c]) {
+                    if (anchor > chav.lenght - 1) {
+                        anchor = 0;
+                    }
+                    let newPos = ((c + chav[anchor]) % 26);
 
-//Define as posições das letras das chaves
-const retornaVetorPosicoes = (work) => {
-    let vetor = []
-    for (let i = 0; i < work.length; i++) {
-        vetor.push(returnP(work[i]))
+                    anchor += 1;
+
+                    res = alfabeto[newPos];
+                    retorno += res;
+                }
+            }
+        } else {
+            console.log(retorno)
+            res = " ";
+            retorno += res;
+        }
+
     }
-    return vetor
-
+    retorneHTML(retorno);
+    event.preventDefault();
 }
 
-const removeAcento = (letraAcento) => {
-    let string = letraAcento.toLowerCase();
-	var mapaAcentosHex 	= {
-		a : /[\xE0-\xE6]/g,
-		e : /[\xE8-\xEB]/g,
-		i : /[\xEC-\xEF]/g,
-		o : /[\xF2-\xF6]/g,
-		u : /[\xF9-\xFC]/g,
-		c : /\xE7/g,
-		n : /\xF1/g
-	};
+function descriptografar() {
+    capElemento(".retorno").innerHTML = "<h3>Resultado<h3>"
+    let chav = newKey();
+    console.log(chav)
+    let word = retirarAcento(capElemento('.palavra').value.toLowerCase());
+    console.log(word)
+    let res = "", retorno = "";
+    let anchor = 0;
+    for (let i = 0; i < word.length; i++) {
+        if (word[i] != " ") {
+            for (let c = 0; c < alfabeto.length; c++) {
+                if (word[i] == alfabeto[c]) {
+                    if (anchor > chav.lenght - 1) {
+                        anchor = 0;
+                    }
+                    let newPos = (((c - chav[anchor]) + alfabeto.length)  % 26);
+                    anchor += 1;
+                    res = alfabeto[newPos];
+                    retorno += res;
+                }
+            }
+        } else {
+            console.log(alfabeto.length)
+            console.log(retorno)
+            res = " ";
+            retorno += res;
+        }
 
-	for ( var letra in mapaAcentosHex ) {
-		var expressaoRegular = mapaAcentosHex[letra];
-		string = string.replace( expressaoRegular, letra );
-	}
-
-	return string.toUpperCase();
-
+    }
+    retorneHTML(retorno);
+    event.preventDefault();
 }
 
+function retorneHTML(retorno) {
+    let ret = document.createElement("p");
+    let conteudo = document.createTextNode(retorno);
+    ret.appendChild(conteudo);
+    capElemento(".retorno").appendChild(ret);
+}
+
+function retirarAcento(word) {
+    word = word.toLowerCase();
+    word = word.replace(new RegExp('[ÁÀÂÃ]', 'gi'), 'a');
+    word = word.replace(new RegExp('[ÉÈÊ]', 'gi'), 'e');
+    word = word.replace(new RegExp('[ÍÌÎ]', 'gi'), 'i');
+    word = word.replace(new RegExp('[ÓÒÔÕ]', 'gi'), 'o');
+    word = word.replace(new RegExp('[ÚÙÛ]', 'gi'), 'u');
+    word = word.replace(new RegExp('[Ç]', 'gi'), 'c');
+    return word;
+}
