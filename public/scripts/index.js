@@ -2,6 +2,7 @@ var alfabeto = ["a", "b", "c", "d", "e", "f",
     "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 ]
+var numsim = '1234567890!@#$%¨&*()_+,./|';
 var key = []
 
 function capElemento(ref) {
@@ -49,26 +50,31 @@ function criptografar() {
     let res = "", retorno = "";
     let anchor = 0;
     for (let i = 0; i < word.length; i++) {
-        if (word[i] != " ") {
-            for (let c = 0; c < alfabeto.length; c++) {
-                if (word[i] == alfabeto[c]) {
-                    if (anchor > chav.lenght - 1) {
-                        anchor = 0;
-                    }
-                    let newPos = ((c + chav[anchor]) % 26);
 
-                    anchor += 1;
-
-                    res = alfabeto[newPos];
-                    retorno += res;
-                }
+        for (let k = 0; k < numsim.length; k++) {
+            if (word[i] === numsim.charAt(k)) {
+                retorno += numsim.charAt(k)
             }
-        } else {
-            console.log(retorno)
-            res = " ";
-            retorno += res;
         }
 
+        if (i <= word.length) {
+            if (word[i] != " ") {
+                for (let j = 0; j < alfabeto.length; j++) {
+                    if (word[i] == alfabeto[j]) {
+                        if (anchor > chav.length - 1) {
+                            anchor = 0;
+                        }
+                        let newPos = ((j + chav[anchor]) % 26);
+                        anchor += 1;
+                        res = alfabeto[newPos];
+                        retorno += res;
+                    }
+                }
+            } else {
+                res = " ";
+                retorno += res;
+            }
+        }
     }
     retorneHTML(retorno);
     event.preventDefault();
@@ -83,25 +89,31 @@ function descriptografar() {
     let res = "", retorno = "";
     let anchor = 0;
     for (let i = 0; i < word.length; i++) {
-        if (word[i] != " ") {
-            for (let c = 0; c < alfabeto.length; c++) {
-                if (word[i] == alfabeto[c]) {
-                    if (anchor > chav.lenght - 1) {
-                        anchor = 0;
-                    }
-                    let newPos = (((c - chav[anchor]) + alfabeto.length)  % 26);
-                    anchor += 1;
-                    res = alfabeto[newPos];
-                    retorno += res;
-                }
+
+        for (let k = 0; k < numsim.length; k++) {
+            if (word[i] === numsim.charAt(k)) {
+                retorno += numsim.charAt(k)
             }
-        } else {
-            console.log(alfabeto.length)
-            console.log(retorno)
-            res = " ";
-            retorno += res;
         }
 
+        if (i <= word.length) {
+            if (word[i] != " ") {
+                for (let j = 0; j < alfabeto.length; j++) {
+                    if (word[i] == alfabeto[j]) {
+                        if (anchor > chav.length - 1) {
+                            anchor = 0;
+                        }
+                        let newPos = (((j - chav[anchor]) + alfabeto.length) % 26);
+                        anchor += 1;
+                        res = alfabeto[newPos];
+                        retorno += res;
+                    }
+                }
+            } else {
+                res = " ";
+                retorno += res;
+            }
+        }
     }
     retorneHTML(retorno);
     event.preventDefault();
