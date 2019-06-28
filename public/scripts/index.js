@@ -41,7 +41,7 @@ newKey = () => {
     return key
 }
 
-function criptografar() {
+criptografar = () => {
     capElemento(".retorno").innerHTML = "<h3>Resultado<h3>"
     let chav = newKey();
     console.log(chav)
@@ -80,7 +80,7 @@ function criptografar() {
     event.preventDefault();
 }
 
-function descriptografar() {
+ descriptografar = () => {
     capElemento(".retorno").innerHTML = "<h3>Resultado<h3>"
     let chav = newKey();
     console.log(chav)
